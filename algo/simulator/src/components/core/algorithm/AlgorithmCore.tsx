@@ -6,6 +6,8 @@ import {
   ALGO_GRID_BLOCK_SIZE_MULTIPLIER,
   GRID_ANIMATION_SPEED,
   ROBOT_INITIAL_POSITION,
+  GRID_TOTAL_WIDTH,
+  GRID_TOTAL_HEIGHT,
 } from "../../../constants";
 import {
   FaChevronLeft,
@@ -31,6 +33,23 @@ import { AlgoInput, AlgoType, AlgoTypeList } from "../../../schemas/algo_input";
 import { AlgoOutput } from "../../../schemas/algo_output";
 import { AlgorithmSelector } from "./AlgorithmSelector";
 import { DropdownContainer } from "../../common/DropdownContainer";
+
+// Add this above your component
+const START_POSITIONS = [
+  // Bottom Left
+  { label: "Bottom Left (North)", x: 0, y: 0, theta: Math.PI / 2 },
+  { label: "Bottom Left (East)", x: 0, y: 2, theta: 0 },
+  // Bottom Right
+  { label: "Bottom Right (North)", x: 17, y: 0, theta: Math.PI / 2 },
+  { label: "Bottom Right (West)", x: 19, y: 0, theta: Math.PI },
+  // Top Left
+  { label: "Top Left (South)", x: 2, y: 19, theta: - Math.PI / 2},
+  { label: "Top Left (East)", x: 0, y: 19, theta: 0 },
+  // Top Right
+  { label: "Top Right (South)", x: 19, y: 19, theta: - Math.PI / 2 },
+  { label: "Top Right (West)", x: 19, y: 17, theta: Math.PI},
+];
+
 
 export const AlgorithmCore = () => {
   const fetch = useFetch();
@@ -79,6 +98,13 @@ export const AlgorithmCore = () => {
     setIsAlgorithmLoading(true);
     setAlgoRuntime("");
 
+    // Use custom start position for Custom test, otherwise default
+    const initialPosition =
+      selectedTestEnum === AlgoTestEnum.Custom
+        ? { x: startX, y: startY, theta: startTheta }
+        : ROBOT_INITIAL_POSITION;
+    console.log("Using Initial Position:", initialPosition);  
+
     const algoInput: AlgoInput = {
       cat: "obstacles",
       value: {
@@ -91,6 +117,7 @@ export const AlgorithmCore = () => {
             d: o.d,
           };
         }),
+        initial_position: (initialPosition), // <-- Add this line
       },
       server_mode: currentMode,
       algo_type: selectedAlgoTypeEnum,
@@ -168,6 +195,23 @@ export const AlgorithmCore = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStep, totalSteps, startAnimation, isManualAnimation]);
 
+    // Starting Position
+  const [startX, setStartX] = useState(START_POSITIONS[0].x);
+  const [startY, setStartY] = useState(START_POSITIONS[0].y);
+  const [startTheta, setStartTheta] = useState(START_POSITIONS[0].theta);
+
+  // Update currentRobotPosition when startX, startY, or startTheta changes for Custom test
+  useEffect(() => {
+    if (selectedTestEnum === AlgoTestEnum.Custom) {
+      setCurrentRobotPosition({
+        x: startX,
+        y: startY,
+        theta: startTheta,
+      });
+      console.log("Start position updated:", startX, startY, startTheta);
+    }
+  }, [startX, startY, startTheta, selectedTestEnum]);
+
   return (
     <CoreContainter title="Algorithm Simulator">
       {/* Server Status */}
@@ -219,7 +263,44 @@ export const AlgorithmCore = () => {
 
       {/* Animation */}
       {robotPositions && (
-        <div className="flex flex-col items-center justify-center gap-2 mt-2 mb-4">
+        <div className="mt-2 mb-4 flex flex-col justify-center items-center gap-2">
+          {/* Position Info */}
+          <div className="text-sm font-mono mb-2">
+            <span className="font-bold">Current Position:</span>{" "}
+            {robotPositions[currentStep]
+              ? (robotPositions[currentStep].x === -1 && robotPositions[currentStep].y === -1
+                  ? `(${robotPositions[currentStep - 1]?.x}, ${robotPositions[currentStep - 1]?.y}, Facing: ${getFacingDirection(robotPositions[currentStep - 1]?.theta)})` +
+                    (robotPositions[currentStep].theta === -1 ? " (Scan Done)" : " (Scanning)")
+                  : `(${robotPositions[currentStep].x}, ${robotPositions[currentStep].y}, Facing: ${getFacingDirection(robotPositions[currentStep].theta)})`)
+              : "N/A"}
+            <br />
+            <span className="font-bold">Next Position:</span>{" "}
+            {robotPositions[currentStep + 1]
+              ? (robotPositions[currentStep + 1].x === -1 && robotPositions[currentStep + 1].y === -1
+                  ? `(${robotPositions[currentStep].x}, ${robotPositions[currentStep].y}, Facing: ${getFacingDirection(robotPositions[currentStep].theta)})` +
+                    (robotPositions[currentStep + 1].theta === -1 ? " (Scan Done)" : " (Scanning)")
+                  : `(${robotPositions[currentStep + 1].x}, ${robotPositions[currentStep + 1].y}, Facing: ${getFacingDirection(robotPositions[currentStep + 1].theta)})`)
+              : "End"}
+            <br />
+            <span className="font-bold">Direction:</span>{" "}
+            {robotPositions[currentStep + 1]
+              ? (() => {
+                  const curr = robotPositions[currentStep];
+                  const next = robotPositions[currentStep + 1];
+                  if (!curr || !next) return "N/A";
+                  if (curr.x === -1 && curr.y === -1) return curr.theta === -1 ? getFacingDirection(robotPositions[currentStep+1].theta) : "Scan done";
+                  if (next.x === -1 && next.y === -1) return next.theta === -1 ? "Scan Done" : "Scanning";
+                  const dx = next.x - curr.x;
+                  const dy = next.y - curr.y;
+                  if (dx === 0 && dy === 0) return "Stationary";
+                  const thetaDeg = ((curr.theta ?? 0) * 180) / Math.PI;
+                  const thetaNorm = ((thetaDeg % 360) + 360) % 360;
+                  const moveAngle = Math.atan2(dy, dx) * 180 / Math.PI;
+                  const relativeAngle = ((((moveAngle - thetaNorm) % 360) + 540) % 360) - 180; // [-180, 180]
+                  return `${getDirection(curr, next)} (relative angle: ${relativeAngle.toFixed(1)}°)`;
+                })()
+              : "End"}
+          </div>
           {/* Start Animation */}
           <Button
             onClick={() => {
@@ -277,7 +358,9 @@ export const AlgorithmCore = () => {
             onChange={(e) => {
               setCurrentStep(Number(e.target.value));
               setIsManualAnimation(true);
+              
             }}
+            
             onPointerUp={() => setIsManualAnimation(false)}
             step={1}
             className="w-1/2 h-2 bg-orange-900 rounded-lg appearance-none cursor-pointer"
@@ -293,6 +376,141 @@ export const AlgorithmCore = () => {
         canAddObstacle={true}
         setSelectedTest={setSelectedTest}
       />
+
+      {/* Custom Test Settings */}
+      {selectedTestEnum === AlgoTestEnum.Custom && (
+        <div className="mb-4 flex flex-col items-center gap-2">
+          <div>
+            <label className="mr-2 font-bold">Start Position:</label>
+            <select
+              value={`${startX},${startY},${startTheta}`}
+              onChange={e => {
+                const [x, y, theta] = e.target.value.split(',').map(Number);
+                setStartX(x);
+                setStartY(y);
+                setStartTheta(theta);
+              }}
+              
+            >
+              {START_POSITIONS.map((pos, idx) => (
+                <option key={idx} value={`${pos.x},${pos.y},${pos.theta}`}>
+                  {pos.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
     </CoreContainter>
   );
 };
+
+function getDirection(curr: Position, next: Position): string {
+  if (!curr || !next) return "N/A";
+  if (curr.x === -1 && curr.y === -1) return "Stationary";
+  if (next.x === -1 && next.y === -1) return "Scanning";
+
+  // Convert theta from radians to degrees and normalize
+  const thetaDeg = ((curr.theta ?? 0) * 180) / Math.PI;
+  const thetaNorm = ((thetaDeg % 360) + 360) % 360;
+
+  // Calculate movement vector
+  const dx = next.x - curr.x;
+  const dy = next.y - curr.y;
+
+  // Determine facing direction vector
+  let fx = 0, fy = 0;
+  if (thetaNorm === 0) { fx = 1; fy = 0; }        // East
+  else if (thetaNorm === 90) { fx = 0; fy = 1; }  // North
+  else if (thetaNorm === 180) { fx = -1; fy = 0; } // West
+  else if (thetaNorm === 270) { fx = 0; fy = -1; } // South
+  else {
+    // For non-cardinal, use unit vector
+    const thetaRad = (thetaNorm * Math.PI) / 180;
+    fx = Math.round(Math.cos(thetaRad));
+    fy = Math.round(Math.sin(thetaRad));
+  }
+
+  // Dot product to determine forward/reverse
+  const dot = dx * fx + dy * fy;
+  const isForward = dot > 0;
+  const isReverse = dot < 0;
+
+  // Angle between facing direction and movement vector
+  const moveAngle = Math.atan2(dy, dx) * 180 / Math.PI;
+  const relativeAngle = ((((moveAngle - thetaNorm) % 360) + 540) % 360) - 180; // [-180, 180]
+
+  // Angle difference for turning (between current and next theta)
+  const dtheta = ((next.theta - curr.theta + 2 * Math.PI) % (2 * Math.PI));
+  const dthetaDeg = (dtheta * 180) / Math.PI;
+
+  // Use relativeAngle to describe movement direction
+  if (dx === 0 && dy === 0) return "Stationary";
+  if (isForward) {
+    if (Math.abs(relativeAngle) < 10) return "Straight";
+    if (relativeAngle > 0) return "Forward Left";
+    if (relativeAngle < 0) return "Forward Right";
+  }
+  if (isReverse) {
+    if (Math.abs(relativeAngle) < 10 || Math.abs(relativeAngle) === 180) return "Reverse Straight";
+    if (relativeAngle > 0) return "Reverse Left";
+    if (relativeAngle < 0) return "Reverse Right";
+  }
+  if (dtheta !== 0) {
+    if (dthetaDeg > 0 && dthetaDeg <= 180) return "Turn Left";
+    if (dthetaDeg > 180) return "Turn Right";
+  }
+  return "Stationary";
+}
+
+function getFacingDirection(theta: number | undefined): string {
+  if (theta === undefined || theta === null || isNaN(theta)) return "Unknown";
+  // Normalize theta to [0, 360)
+  const normalized = (theta / Math.PI) * 180;
+  if (normalized === 0) return "East";
+  if (normalized === 90 || normalized === -270) return "North";
+  if (normalized === 180 || normalized === -180) return "West";
+  if (normalized === 270 || normalized === -90) return "South";
+  // For non-cardinal angles, show closest direction
+  if (normalized > 0 && normalized < 90) return "Northeast";
+  if (normalized > 90 && normalized < 180) return "Northwest";
+  if (normalized > 180 && normalized < 270) return "Southwest";
+  if (normalized > 270 && normalized < 360) return "Southeast";
+  return "Unknown";
+}
+
+// function getDirection(curr: Position, next: Position): string {
+//   if (!curr || !next) return "N/A";
+//   if (curr.x === -1 && curr.y === -1) return "Stationary";
+//   if (next.x === -1 && next.y === -1) return "Scanning";
+
+//   const thetaDeg = ((curr.theta ?? 0) * 180) / Math.PI;
+//   const thetaNorm = ((thetaDeg % 360) + 360) % 360;
+
+//   const dx = next.x - curr.x;
+//   const dy = next.y - curr.y;
+
+//   if (dx === 0 && dy === 0) return "Stationary";
+
+//   // Calculate movement angle
+//   const moveAngle = Math.atan2(dy, dx) * 180 / Math.PI;
+//   const relativeAngle = ((((moveAngle - thetaNorm) % 360) + 540) % 360);
+
+//   // Array of 8 directions starting with North and rotating clockwise
+//   const directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+
+//   // Determine index in directions array
+//   const index = Math.round(relativeAngle / 45) % 8;
+
+//   return directions[index];
+// }
+
+// function getFacingDirection(theta: number | undefined): string {
+//   if (theta === undefined || theta === null || isNaN(theta)) return "Unknown";
+//   const normalized = (theta * 180 / Math.PI + 360) % 360;
+
+//   const directions = ["E", "NE", "N", "NW", "W", "SW", "S", "SE"]; // Starting from East for consistency
+
+//   const index = Math.round(normalized / 45) % 8;
+//   return directions[index];
+// }

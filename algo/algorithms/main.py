@@ -37,9 +37,15 @@ class AlgoInputValueObstacle(BaseModel):
     y: int   # grid_format
     d: int   # direction of obstacle; follow the Direction ENUM in common.enums.py
 
+class AlgoInputValueInitialPosition(BaseModel):
+    x: int
+    y: int
+    theta: float
+
 class AlgoInputValue(BaseModel):
   obstacles: list[AlgoInputValueObstacle]
   mode: Optional[int] = 0 # (0: Task 1); (1: Task 2)
+  initial_position: Optional[AlgoInputValueInitialPosition] = None  # <-- Add this
 
 class AlgoInput(BaseModel):
     cat: str = "obstacles"
@@ -111,8 +117,18 @@ def main(algo_input: AlgoInput, include_both: bool = False):
     obstacles = _extract_obstacles_from_input(
         algo_input["value"]["obstacles"], algo_server_mode)
 
-    # Start Position
-    start_position = Position(x=0, y=0, theta=pi/2)
+        # Start Position
+    # start_position = Position(x=0, y=0, theta=pi/2)
+    initial_position = algo_input["value"].get("initial_position", None)
+    print("Initial position from input:", initial_position)
+    if initial_position is None:
+        start_x, start_y, start_theta = 0, 0, 1.57
+    else:
+        start_x = initial_position.get("x", 0) * 10
+        start_y = initial_position.get("y", 0) * 10
+        start_theta = initial_position.get("theta", 1.57)
+    start_position = Position(x=start_x, y=start_y, theta=start_theta)  
+    print("Start position:", start_position)
 
     # Map
     map = Map(obstacles=obstacles)
@@ -124,6 +140,8 @@ def main(algo_input: AlgoInput, include_both: bool = False):
 
     # Algorithm Search⭐
     min_perm, paths = algo.search()
+
+
 
     # Generate Simulator Output
     if algo_server_mode == AlgoInputMode.SIMULATOR:

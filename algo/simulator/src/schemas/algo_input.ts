@@ -1,4 +1,5 @@
 import { Obstacle } from "./obstacle";
+import { Position } from "./robot";
 
 export enum AlgoType {
   EXHAUSTIVE_ASTAR = "Exhaustive Astar",
@@ -12,6 +13,7 @@ export interface AlgoInput {
   value: {
     obstacles: Obstacle[];
     mode: 0; // 0: Task 1
+    initial_position?: Position;
   };
   server_mode: string;
   algo_type: string;
