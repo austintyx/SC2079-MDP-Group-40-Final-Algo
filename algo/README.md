@@ -58,7 +58,7 @@ pip install -r requirements.txt
 3. In the same directory (`/algorithms-python`), start the application.
 
 ```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 8080
+uvicorn main:app --reload --host 0.0.0.0 
 ```
 
 And you are ready to start using the Algorithm Server! The server application is running on http://127.0.0.1:8000/
