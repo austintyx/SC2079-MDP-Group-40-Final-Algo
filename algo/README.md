@@ -1,8 +1,8 @@
-# SC2079 MDP Group 11 - Algorithms
+# SC2079 MDP Group 40 - Algorithms
 
 **Table of Contents**
 
-- [SC2079 MDP Group 11 - Algorithms](#sc2079-mdp-group-11---algorithms)
+- [SC2079 MDP Group 40 - Algorithms](#sc2079-mdp-group-11---algorithms)
 - [Algorithm Simulator (Web)](#algorithm-simulator-web)
   - [Setup Instructions](#setup-instructions)
 - [Algorithm Server (Python)](#algorithm-server-python)
