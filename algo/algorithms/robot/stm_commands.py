@@ -107,14 +107,15 @@ def convert_segments_to_commands(
                     )
                 ])
             elif segment.s == 0:
-                result.append([
-                    "F," + str(int(segment.d)),
-                    AlgoOutputLivePosition(
-                        x = segment.pos.x // GRID_CELL_CM,
-                        y = segment.pos.y // GRID_CELL_CM,
-                        d = convertThetatoNumericDirection(segment.pos.theta)
-                    )
-                ])
+                if int(segment.d) > 0:
+                    result.append([
+                        "F," + str(int(segment.d)),
+                        AlgoOutputLivePosition(
+                            x = segment.pos.x // GRID_CELL_CM,
+                            y = segment.pos.y // GRID_CELL_CM,
+                            d = convertThetatoNumericDirection(segment.pos.theta)
+                        )
+                    ])
             elif segment.s == 1:
                 result.append([
                     "R",

@@ -13,6 +13,8 @@ ROBOT_ACTUAL_WIDTH = 19
 ROBOT_ACTUAL_HEIGHT = 23.7
 ROBOT_VERT_OFFSET = (ROBOT_HEIGHT - ROBOT_ACTUAL_HEIGHT) / 2
 
+### CHANGE VALUES BELOW TO TUNE PATH PLANNING ###
+
 # +--------------------+
 # | collision checking |
 # +--------------------+
@@ -32,26 +34,50 @@ ROBOT_VERT_OFFSET = (ROBOT_HEIGHT - ROBOT_ACTUAL_HEIGHT) / 2
 WPS_FL_IN = [
     # (-0.5,   4.0,  math.radians(15)),  # TODO
     # (-2.1,   7.7,  math.radians(30)),  # TODO
-    (-3.4,   16.5, math.radians(45))  # DONE
+    (-4.4,   17, math.radians(45))  # DONE
 ]
 
 WPS_FR_IN = [
     # (1.0,  8.0,   -math.radians(15)),  # TODO
     # (4.1,  15.4,  -math.radians(30)),  # TODO
-    (11.5,  30.0,  -math.radians(45))  # TODO
+    (8.7,  29.0,  -math.radians(45))  # TODO
 ]
 
 WPS_BR_IN = [
     # (1.1, -8.2,   math.radians(15)),  # TODO
     # (4.2, -15.8,  math.radians(30)),  # TODO
-    (14.0, -27.9,  math.radians(45))  # TODO
+    (12.5, -27.6,  math.radians(45))  # TODO
 ]
 
 WPS_BL_IN = [
     # (-0.5, -4.1,  -math.radians(15)),  # TODO
     # (-2.1, -7.8,  -math.radians(30)),  # TODO
-    (-11.9, -15.5,  -math.radians(45))  # DONE
+    (-8, -15,  -math.radians(45))  # DONE
 ]
+
+# WPS_FL_IN = [
+#     # (-0.5,   4.0,  math.radians(15)),  # TODO
+#     # (-2.1,   7.7,  math.radians(30)),  # TODO
+#     (-4.4,   17, math.radians(45))  # DONE
+# ]
+
+# WPS_FR_IN = [
+#     # (1.0,  8.0,   -math.radians(15)),  # TODO
+#     # (4.1,  15.4,  -math.radians(30)),  # TODO
+#     (8.7,  29  -math.radians(45))  # TODO
+# ]
+
+# WPS_BR_IN = [
+#     # (1.1, -8.2,   math.radians(15)),  # TODO
+#     # (4.2, -15.8,  math.radians(30)),  # TODO
+#     (12.5, -27.6,  math.radians(45))  # TODO
+# ]
+
+# WPS_BL_IN = [
+#     # (-0.5, -4.1,  -math.radians(15)),  # TODO
+#     # (-2.1, -7.8,  -math.radians(30)),  # TODO
+#     (-8, -15,  -math.radians(45))  # DONE
+# ]
 
 # TODO: Measure (Using Bottom Left of Robot)
 # Outdoor (SCSE Corridor)
@@ -84,6 +110,8 @@ WPS_BL = WPS_BL_IN if INDOOR else WPS_BL_OUT
 
 BUFFER = 5.01
 
+### CHANGE VALUES BELOW TO TUNE PATH PLANNING ###
+
 # +-------+
 # | astar |
 # +-------+
@@ -94,8 +122,13 @@ BUFFER = 5.01
 # Indoor (SCSE Lab)
 FL_A_IN, FL_B_IN = 22.1,  22.3  # DONE
 FR_A_IN, FR_B_IN = 41.1,  41.6  # DONE
-BR_A_IN, BR_B_IN = 42.6,  45.3    # DONE
+BR_A_IN, BR_B_IN = 42.6,  45.3  # DONE
 BL_A_IN, BL_B_IN = 25.5,  25.0  # DONE
+
+# FL_A_IN, FL_B_IN = 22.6, 22.5
+# FR_A_IN, FR_B_IN = 41.1,  41.6
+# BR_A_IN, BR_B_IN = 42.6,  45.3
+# BL_A_IN, BL_B_IN = 25.5,  25.0
 
 # Outdoor (SCSE Corridor)
 FL_A_OUT, FL_B_OUT = 15.1, 22.2  # TODO: Measure
@@ -194,7 +227,8 @@ BR_Y_BOUND = [OBSTACLE_WIDTH/2 + ROBOT_HEIGHT,
 ROBOT_BTM_LEFT_CIRCLE_RAD = 2
 ROBOT_MIN_CAMERA_DIST = 20
 
-# -------- deprecated --------
+### CHANGE VALUES BELOW TO TUNE PATH PLANNING ###
+# +---------------------+
 ROBOT_TURNING_RADIUS = 25
 # -------- ---------- --------
 
@@ -203,8 +237,8 @@ ROBOT_TURNING_RADIUS = 25
 # +----------------+
 
 TK_SCALE = 2
-MAP_WIDTH = 200
-MAP_HEIGHT = 200
+MAP_WIDTH = 205
+MAP_HEIGHT = 205
 GRID_WIDTH = 5  # for display on simulator
 # for cell snap (coords) 5. Max value < 1.5* min(DIST_BL, DIST_BR, ... DIST_FW)
 SNAP_COORD = _DIST_STR
