@@ -34,25 +34,31 @@ ROBOT_VERT_OFFSET = (ROBOT_HEIGHT - ROBOT_ACTUAL_HEIGHT) / 2
 WPS_FL_IN = [
     # (-0.5,   4.0,  math.radians(15)),  # TODO
     # (-2.1,   7.7,  math.radians(30)),  # TODO
-    (-4.4,   17, math.radians(45))  # DONE
+    (-4.7,   17.2, math.radians(45)),  # DONE
+    # (-19.6, 24.5, math.radians(90))  #TODO
 ]
 
 WPS_FR_IN = [
     # (1.0,  8.0,   -math.radians(15)),  # TODO
     # (4.1,  15.4,  -math.radians(30)),  # TODO
-    (8.7,  29.0,  -math.radians(45))  # TODO
+    (10.5,  31.2,  -math.radians(45)),  # DONE
+    # (42.2, 43.0,  -math.radians(90)) #TODO
 ]
 
 WPS_BR_IN = [
     # (1.1, -8.2,   math.radians(15)),  # TODO
     # (4.2, -15.8,  math.radians(30)),  # TODO
-    (12.5, -27.6,  math.radians(45))  # TODO
+    # (12.5, -27.6,  math.radians(45)),  # DONE
+    # (24, -53,  math.radians(90)) #TODO
+    (12.5, -27.6,  math.radians(45)),  # DONE
+    # (47.3, -41.2,  math.radians(90)) #TODO
 ]
 
 WPS_BL_IN = [
     # (-0.5, -4.1,  -math.radians(15)),  # TODO
     # (-2.1, -7.8,  -math.radians(30)),  # TODO
-    (-8, -15,  -math.radians(45))  # DONE
+    (-8.9, -14.1,  -math.radians(45)),  # DONE
+    # (-25.8, -19,  -math.radians(90)) #TODO
 ]
 
 # WPS_FL_IN = [
@@ -160,7 +166,7 @@ DIST_BR = WPS_BR[-1][0], WPS_BR[-1][1], _circum(BR_A, BR_B)/4
 PENALTY_STOP = 40
 MAX_THETA_ERR = math.pi / 12
 MAX_X_ERR = 5, 5  # L, R (Configurable: Change to edit the node boundaries)
-MAX_Y_ERR = 7.5, 5  # U, D (Configurable: Change to edit the node boundaries)
+MAX_Y_ERR = 5, 5  # U, D (Configurable: Change to edit the node boundaries)
 # MAX_X_ERR = 5, 5  # L, R (Configurable: Change to edit the node boundaries)
 # MAX_Y_ERR = 7.5, 35  # U, D (Configurable: Change to edit the node boundaries)
 
@@ -170,7 +176,7 @@ MAX_Y_ERR = 7.5, 5  # U, D (Configurable: Change to edit the node boundaries)
 
 OBSTACLE_WIDTH = 10
 IMG_THICKNESS = 2
-EDGE_ERR = 0.1
+EDGE_ERR = 0.5
 CONE = [10, 10, 4, 40]
 
 # +--------------------+
