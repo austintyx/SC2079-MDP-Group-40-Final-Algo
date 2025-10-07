@@ -113,8 +113,8 @@ class HybridAStar:
             if not self.map.is_valid(c_pos):
                 continue
 
-            # if has_collision(node.c_pos, ROBOT_TIME_STEP, movements[(v, s)], self.map):
-            #     continue
+            if has_collision(node.c_pos, ROBOT_TIME_STEP, movements[(v, s)], self.map):
+                continue
 
             g = ROBOT_TIME_STEP * \
                 (PENALTY_STOP if (v != node.v or s != node.s) else 1)

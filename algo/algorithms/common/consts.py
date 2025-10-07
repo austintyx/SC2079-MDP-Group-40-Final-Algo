@@ -237,8 +237,8 @@ ROBOT_TURNING_RADIUS = 25
 # +----------------+
 
 TK_SCALE = 2
-MAP_WIDTH = 205
-MAP_HEIGHT = 205
+MAP_WIDTH = 200
+MAP_HEIGHT = 200
 GRID_WIDTH = 5  # for display on simulator
 # for cell snap (coords) 5. Max value < 1.5* min(DIST_BL, DIST_BR, ... DIST_FW)
 SNAP_COORD = _DIST_STR

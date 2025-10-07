@@ -22,7 +22,8 @@ class Obstacle:
         y = self.y
         theta = None
 
-        pad = (ROBOT_WIDTH - OBSTACLE_WIDTH) / 2
+        # pad = (ROBOT_WIDTH - OBSTACLE_WIDTH) / 2 #TODO EDIT
+        pad = 7.5 #TODO EDIT
 
         if self.facing == Direction.NORTH:
             if x == 190:

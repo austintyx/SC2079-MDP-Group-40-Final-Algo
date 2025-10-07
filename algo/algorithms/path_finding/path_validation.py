@@ -45,7 +45,9 @@ def has_collision(
 
     for wp in wps:
         pos = Position(*(v_st + wp[0]*v_u + wp[1]*v_r),
-                       (st.theta + wp[2]) % (2*pi))
+                       ((st.theta + wp[2]) % (2*pi)))
         if not mp.is_valid(pos, obs):
+            # print(f"Collision at {pos} for {movement}")
             return True
+        # print(f"No collision at {pos} for {movement}")
     return False
