@@ -1,7 +1,7 @@
 import math
 
 
-INDOOR = False
+INDOOR = True
 
 # +------------------+
 # | robot dimensions |
@@ -9,8 +9,8 @@ INDOOR = False
 
 ROBOT_WIDTH = 30
 ROBOT_HEIGHT = 30
-ROBOT_ACTUAL_WIDTH = 30
-ROBOT_ACTUAL_HEIGHT = 30
+ROBOT_ACTUAL_WIDTH = 19
+ROBOT_ACTUAL_HEIGHT = 23.7
 ROBOT_VERT_OFFSET = (ROBOT_HEIGHT - ROBOT_ACTUAL_HEIGHT) / 2
 
 ### CHANGE VALUES BELOW TO TUNE PATH PLANNING ###
@@ -32,33 +32,27 @@ ROBOT_VERT_OFFSET = (ROBOT_HEIGHT - ROBOT_ACTUAL_HEIGHT) / 2
 # Measure (Using Bottom Left of Robot)
 # Indoor (SCSE Lab) - Radians are estimation (Start-End)/number_of_points
 WPS_FL_IN = [
-    # (-0.5,   4.0,  math.radians(15)),  # TODO
-    # (-2.1,   7.7,  math.radians(30)),  # TODO
-    (-3.4,   16.0, math.radians(45)),  # DONE
-    # (-19.6, 24.5, math.radians(90))  #TODO
+    (-1.2, 5.9, math.radians(15)),   # 1/3 of 45° displacement
+    (-2.4, 11.3, math.radians(30)),  # 2/3 of 45° displacement
+    (-3.4,   16.0, math.radians(45))  # DONE
 ]
 
 WPS_FR_IN = [
-    # (1.0,  8.0,   -math.radians(15)),  # TODO
-    # (4.1,  15.4,  -math.radians(30)),  # TODO
-    (9.0,  29.5,  -math.radians(45)),  # DONE
-    # (42.2, 43.0,  -math.radians(90)) #TODO
+    (3.3, 10.8, -math.radians(15)),    # 1/3 of 45° displacement
+    (6.4, 20.9, -math.radians(30)),   # 2/3 of 45° displacement
+    (9.0,  29.5,  -math.radians(45))  # DONE
 ]
 
 WPS_BR_IN = [
-    # (1.1, -8.2,   math.radians(15)),  # TODO
-    # (4.2, -15.8,  math.radians(30)),  # TODO
-    # (12.5, -27.6,  math.radians(45)),  # DONE
-    # (24, -53,  math.radians(90)) #TODO
-    (12.4, -27.0,  math.radians(45)),  # DONE
-    # (47.3, -41.2,  math.radians(90)) #TODO
+    (4.5, -9.9, math.radians(15)),    # 1/3 of 45° displacement
+    (8.8, -19.1, math.radians(30)),   # 2/3 of 45° displacement
+    (12.4, -27.0,  math.radians(45))  # DONE
 ]
 
 WPS_BL_IN = [
-    # (-0.5, -4.1,  -math.radians(15)),  # TODO
-    # (-2.1, -7.8,  -math.radians(30)),  # TODO
-    (-8.0, -13.6,  -math.radians(45)),  # DONE
-    # (-25.8, -19,  -math.radians(90)) #TODO
+    (-2.9, -5.0, -math.radians(15)),  # 1/3 of 45° displacement
+    (-5.7, -9.6, -math.radians(30)),  # 2/3 of 45° displacement
+    (-8.0, -13.6,  -math.radians(45))  # DONE
 ]
 
 # WPS_FL_IN = [
@@ -88,23 +82,23 @@ WPS_BL_IN = [
 # TODO: Measure (Using Bottom Left of Robot)
 # Outdoor (SCSE Corridor)
 WPS_FL_OUT = [
-    # (-0.6, 4.8, math.radians(15)),  # TODO
-    # (-2.5, 9.3, math.radians(30)),  # TODO
+    (-1.7, 5.3, math.radians(15)),    # 1/3 of 45° displacement
+    (-3.3, 10.7, math.radians(30)),   # 2/3 of 45° displacement
     (-5.0, 16, math.radians(45))  # TODO
 ]
 WPS_FR_OUT = [
-    # (1.4, 10.3, -math.radians(15)),  # TODO
-    # (5.3, 19.9, -math.radians(30)),  # TODO
+    (2.9, 9.5, -math.radians(15)),    # 1/3 of 45° displacement
+    (5.9, 19.0, -math.radians(30)),   # 2/3 of 45° displacement
     (8.8, 28.5, -math.radians(45))  # DONE
 ]
 WPS_BR_OUT = [
-    # (1.3, -10.0, math.radians(15)),  # TODO
-    # (5.2, -19.4, math.radians(30)),  # TODO
+    (5.0, -9.1, math.radians(15)),    # 1/3 of 45° displacement
+    (10.1, -18.3, math.radians(30)),  # 2/3 of 45° displacement
     (15.1, -27.4, math.radians(45))  # DONE
 ]
 WPS_BL_OUT = [
-    # (-0.7, -5.0, -math.radians(15)),  # TODO
-    # (-2.6, -9.7, -math.radians(30)),  # TODO
+    (-3.2, -4.5, -math.radians(15)),  # 1/3 of 45° displacement
+    (-6.3, -9.1, -math.radians(30)),  # 2/3 of 45° displacement
     (-9.5, -13.6, -math.radians(45))  # DONE.
 ]
 
@@ -114,8 +108,7 @@ WPS_FR = WPS_FR_IN if INDOOR else WPS_FR_OUT
 WPS_BR = WPS_BR_IN if INDOOR else WPS_BR_OUT
 WPS_BL = WPS_BL_IN if INDOOR else WPS_BL_OUT
 
-# BUFFER = 5.01
-BUFFER = 10.01  # TODO: Editable
+BUFFER = 5.01
 
 ### CHANGE VALUES BELOW TO TUNE PATH PLANNING ###
 
@@ -166,8 +159,8 @@ DIST_BR = WPS_BR[-1][0], WPS_BR[-1][1], _circum(BR_A, BR_B)/4
 
 PENALTY_STOP = 40
 MAX_THETA_ERR = math.pi / 12
-MAX_X_ERR = 10, 10  # L, R (Configurable: Change to edit the node boundaries)
-MAX_Y_ERR = 10, 10  # U, D (Configurable: Change to edit the node boundaries)
+MAX_X_ERR = 5, 5  # L, R (Configurable: Change to edit the node boundaries)
+MAX_Y_ERR = 5, 5  # U, D (Configurable: Change to edit the node boundaries)
 # MAX_X_ERR = 5, 5  # L, R (Configurable: Change to edit the node boundaries)
 # MAX_Y_ERR = 7.5, 35  # U, D (Configurable: Change to edit the node boundaries)
 
@@ -177,7 +170,7 @@ MAX_Y_ERR = 10, 10  # U, D (Configurable: Change to edit the node boundaries)
 
 OBSTACLE_WIDTH = 10
 IMG_THICKNESS = 2
-EDGE_ERR = 0.5
+EDGE_ERR = 1
 CONE = [10, 10, 4, 40]
 
 # +--------------------+
@@ -204,7 +197,7 @@ BL_OUTER = BL_OUTER_IN if INDOOR else BL_OUTER_OUT
 BR_OUTER = BR_OUTER_IN if INDOOR else BR_OUTER_OUT
 
 # [TODO: Editable] To increase the boundaries to identify obstacles potentially in the path of the robot more accurately (before doing obstacle collision detection)
-BACKWARDS_A_B_MULTIPLIER = 3
+BACKWARDS_A_B_MULTIPLIER = 2
 
 FL_X_BOUND = [OBSTACLE_WIDTH/2 + FL_A - ROBOT_WIDTH/2 + ROBOT_HEIGHT - ROBOT_VERT_OFFSET,
               OBSTACLE_WIDTH/2 + ROBOT_WIDTH]

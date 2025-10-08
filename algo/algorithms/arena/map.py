@@ -94,7 +94,7 @@ class Map:
 
         # For every obstacle, check if any of the 4 obstacle corners lies within the robot
         # To increase the virtual boundary of the obstacle (in cm)
-        EXTRA_VIRTUAL_BOUNDARY = 10
+        EXTRA_VIRTUAL_BOUNDARY = 20
         for obs in obstacles:
             # Obstacle x and y bounds
             o_btm = obs.y + EDGE_ERR - EXTRA_VIRTUAL_BOUNDARY
