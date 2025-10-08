@@ -1,16 +1,16 @@
 import math
 
 
-INDOOR = True
+INDOOR = False
 
 # +------------------+
 # | robot dimensions |
 # +------------------+
 
-ROBOT_WIDTH = 25
-ROBOT_HEIGHT = 28
-ROBOT_ACTUAL_WIDTH = 19
-ROBOT_ACTUAL_HEIGHT = 23.7
+ROBOT_WIDTH = 30
+ROBOT_HEIGHT = 30
+ROBOT_ACTUAL_WIDTH = 30
+ROBOT_ACTUAL_HEIGHT = 30
 ROBOT_VERT_OFFSET = (ROBOT_HEIGHT - ROBOT_ACTUAL_HEIGHT) / 2
 
 ### CHANGE VALUES BELOW TO TUNE PATH PLANNING ###
@@ -90,22 +90,22 @@ WPS_BL_IN = [
 WPS_FL_OUT = [
     # (-0.6, 4.8, math.radians(15)),  # TODO
     # (-2.5, 9.3, math.radians(30)),  # TODO
-    (-3.7, 16.2, math.radians(45))  # TODO
+    (-5.0, 16, math.radians(45))  # TODO
 ]
 WPS_FR_OUT = [
     # (1.4, 10.3, -math.radians(15)),  # TODO
     # (5.3, 19.9, -math.radians(30)),  # TODO
-    (10.2, 29.0, -math.radians(45))  # DONE
+    (8.8, 28.5, -math.radians(45))  # DONE
 ]
 WPS_BR_OUT = [
     # (1.3, -10.0, math.radians(15)),  # TODO
     # (5.2, -19.4, math.radians(30)),  # TODO
-    (7.8, -16.7, math.radians(45))  # DONE
+    (15.1, -27.4, math.radians(45))  # DONE
 ]
 WPS_BL_OUT = [
     # (-0.7, -5.0, -math.radians(15)),  # TODO
     # (-2.6, -9.7, -math.radians(30)),  # TODO
-    (-10.2, -15.4, -math.radians(45))  # DONE.
+    (-9.5, -13.6, -math.radians(45))  # DONE.
 ]
 
 
@@ -114,7 +114,8 @@ WPS_FR = WPS_FR_IN if INDOOR else WPS_FR_OUT
 WPS_BR = WPS_BR_IN if INDOOR else WPS_BR_OUT
 WPS_BL = WPS_BL_IN if INDOOR else WPS_BL_OUT
 
-BUFFER = 5.01
+# BUFFER = 5.01
+BUFFER = 10.01  # TODO: Editable
 
 ### CHANGE VALUES BELOW TO TUNE PATH PLANNING ###
 
@@ -203,7 +204,7 @@ BL_OUTER = BL_OUTER_IN if INDOOR else BL_OUTER_OUT
 BR_OUTER = BR_OUTER_IN if INDOOR else BR_OUTER_OUT
 
 # [TODO: Editable] To increase the boundaries to identify obstacles potentially in the path of the robot more accurately (before doing obstacle collision detection)
-BACKWARDS_A_B_MULTIPLIER = 1.5
+BACKWARDS_A_B_MULTIPLIER = 3
 
 FL_X_BOUND = [OBSTACLE_WIDTH/2 + FL_A - ROBOT_WIDTH/2 + ROBOT_HEIGHT - ROBOT_VERT_OFFSET,
               OBSTACLE_WIDTH/2 + ROBOT_WIDTH]
