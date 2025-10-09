@@ -61,9 +61,9 @@ class Map:
     def is_valid(self, pos: Position, obstacles: List["Obstacle"]) -> bool:
         # Robot
         r_origin = np.array([pos.x, pos.y])
-        r_vec_up = calc_vector(pos.theta, ROBOT_HEIGHT)
+        r_vec_up = calc_vector(pos.theta, ROBOT_HEIGHT + 8)
         r_vec_right = calc_vector(
-            pos.theta - pi / 2, ROBOT_WIDTH
+            pos.theta - pi / 2, ROBOT_WIDTH + 8
         )
 
         # Check if Robot is within the bound of the map
@@ -94,7 +94,7 @@ class Map:
 
         # For every obstacle, check if any of the 4 obstacle corners lies within the robot
         # To increase the virtual boundary of the obstacle (in cm)
-        EXTRA_VIRTUAL_BOUNDARY = 10
+        EXTRA_VIRTUAL_BOUNDARY = 15
         for obs in obstacles:
             # Obstacle bounds with virtual boundary
             o_btm = obs.y + EDGE_ERR - EXTRA_VIRTUAL_BOUNDARY

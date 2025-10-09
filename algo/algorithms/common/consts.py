@@ -84,22 +84,22 @@ WPS_BL_IN = [
 WPS_FL_OUT = [
     # (-1.7, 5.3, math.radians(15)),    # 1/3 of 45° displacement
     # (-3.3, 10.7, math.radians(30)),   # 2/3 of 45° displacement
-    (-5.0, 16, math.radians(45))  # TODO
+    (-7.0, 18, math.radians(45))  # TODO
 ]
 WPS_FR_OUT = [
     # (2.9, 9.5, -math.radians(15)),    # 1/3 of 45° displacement
     # (5.9, 19.0, -math.radians(30)),   # 2/3 of 45° displacement
-    (8.8, 28.5, -math.radians(45))  # DONE
+    (10.8, 30.5, -math.radians(45))  # DONE
 ]
 WPS_BR_OUT = [
     # (5.0, -9.1, math.radians(15)),    # 1/3 of 45° displacement
     # (10.1, -18.3, math.radians(30)),  # 2/3 of 45° displacement
-    (15.1, -27.4, math.radians(45))  # DONE
+    (17.1, -29.4, math.radians(45))  # DONE
 ]
 WPS_BL_OUT = [
     # (-3.2, -4.5, -math.radians(15)),  # 1/3 of 45° displacement
     # (-6.3, -9.1, -math.radians(30)),  # 2/3 of 45° displacement
-    (-8.5, -13.8, -math.radians(45))  # DONE.
+    (-10.5, -15.8, -math.radians(45))  # DONE.
 ]
 
 
@@ -120,10 +120,15 @@ BUFFER = 5.01
   Ellipse Equation's `A` and `B` where `A` is the X radius / semi-major axis, and `B` is the Y radius / semi-minor axis
 """
 # Indoor (SCSE Lab)
-FL_A_IN, FL_B_IN = 26.6,  26.8  # DONE
-FR_A_IN, FR_B_IN = 31.0,  31.4  # DONE
-BR_A_IN, BR_B_IN = 32.6,  32.6  # DONE
-BL_A_IN, BL_B_IN = 24.0,  28.0  # DONE
+# FL_A_IN, FL_B_IN = 26.6,  26.8  # DONE
+# FR_A_IN, FR_B_IN = 31.0,  31.4  # DONE
+# BR_A_IN, BR_B_IN = 32.6,  32.6  # DONE
+# BL_A_IN, BL_B_IN = 24.0,  28.0  # DONE
+
+FL_A_IN, FL_B_IN = 40, 40
+FR_A_IN, FR_B_IN = 40, 40
+BR_A_IN, BR_B_IN = 40, 40
+BL_A_IN, BL_B_IN = 40, 40
 
 # FL_A_IN, FL_B_IN = 22.6, 22.5
 # FR_A_IN, FR_B_IN = 41.1,  41.6
@@ -208,7 +213,7 @@ FL_Y_BOUND = [OBSTACLE_WIDTH/2 + FL_OUTER + (FL_B - FL_A) + ROBOT_VERT_OFFSET,
 FR_X_BOUND = [OBSTACLE_WIDTH/2,
               OBSTACLE_WIDTH/2 + FR_A + ROBOT_WIDTH/2 + ROBOT_HEIGHT - ROBOT_VERT_OFFSET]
 
-FR_Y_BOUND = [OBSTACLE_WIDTH/2 + FR_OUTER + (FR_B - FL_A) + ROBOT_VERT_OFFSET,
+FR_Y_BOUND = [OBSTACLE_WIDTH/2 + FR_OUTER + (FR_B - FR_A) + ROBOT_VERT_OFFSET,
               OBSTACLE_WIDTH/2]
 
 BL_X_BOUND = [OBSTACLE_WIDTH/2 + (BL_A*BACKWARDS_A_B_MULTIPLIER) - ROBOT_WIDTH/2 + ROBOT_VERT_OFFSET,
