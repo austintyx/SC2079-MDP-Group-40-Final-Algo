@@ -32,26 +32,26 @@ ROBOT_VERT_OFFSET = (ROBOT_HEIGHT - ROBOT_ACTUAL_HEIGHT) / 2
 # Measure (Using Bottom Left of Robot)
 # Indoor (SCSE Lab) - Radians are estimation (Start-End)/number_of_points
 WPS_FL_IN = [
-    (-1.2, 5.9, math.radians(15)),   # 1/3 of 45° displacement
-    (-2.4, 11.3, math.radians(30)),  # 2/3 of 45° displacement
+    # (-1.2, 5.9, math.radians(15)),   # 1/3 of 45° displacement
+    # (-2.4, 11.3, math.radians(30)),  # 2/3 of 45° displacement
     (-3.4,   16.0, math.radians(45))  # DONE
 ]
 
 WPS_FR_IN = [
-    (3.3, 10.8, -math.radians(15)),    # 1/3 of 45° displacement
-    (6.4, 20.9, -math.radians(30)),   # 2/3 of 45° displacement
-    (9.0,  29.5,  -math.radians(45))  # DONE
+    # (3.3, 10.8, -math.radians(15)),    # 1/3 of 45° displacement
+    # (6.4, 20.9, -math.radians(30)),   # 2/3 of 45° displacement
+    (8.6,  28.6,  -math.radians(45))  # DONE
 ]
 
 WPS_BR_IN = [
-    (4.5, -9.9, math.radians(15)),    # 1/3 of 45° displacement
-    (8.8, -19.1, math.radians(30)),   # 2/3 of 45° displacement
-    (12.4, -27.0,  math.radians(45))  # DONE
+    # (4.5, -9.9, math.radians(15)),    # 1/3 of 45° displacement
+    # (8.8, -19.1, math.radians(30)),   # 2/3 of 45° displacement
+    (14.0, -27.8,  math.radians(45))  # DONE
 ]
 
 WPS_BL_IN = [
-    (-2.9, -5.0, -math.radians(15)),  # 1/3 of 45° displacement
-    (-5.7, -9.6, -math.radians(30)),  # 2/3 of 45° displacement
+    # (-2.9, -5.0, -math.radians(15)),  # 1/3 of 45° displacement
+    # (-5.7, -9.6, -math.radians(30)),  # 2/3 of 45° displacement
     (-8.0, -13.6,  -math.radians(45))  # DONE
 ]
 
@@ -82,24 +82,24 @@ WPS_BL_IN = [
 # TODO: Measure (Using Bottom Left of Robot)
 # Outdoor (SCSE Corridor)
 WPS_FL_OUT = [
-    (-1.7, 5.3, math.radians(15)),    # 1/3 of 45° displacement
-    (-3.3, 10.7, math.radians(30)),   # 2/3 of 45° displacement
+    # (-1.7, 5.3, math.radians(15)),    # 1/3 of 45° displacement
+    # (-3.3, 10.7, math.radians(30)),   # 2/3 of 45° displacement
     (-5.0, 16, math.radians(45))  # TODO
 ]
 WPS_FR_OUT = [
-    (2.9, 9.5, -math.radians(15)),    # 1/3 of 45° displacement
-    (5.9, 19.0, -math.radians(30)),   # 2/3 of 45° displacement
+    # (2.9, 9.5, -math.radians(15)),    # 1/3 of 45° displacement
+    # (5.9, 19.0, -math.radians(30)),   # 2/3 of 45° displacement
     (8.8, 28.5, -math.radians(45))  # DONE
 ]
 WPS_BR_OUT = [
-    (5.0, -9.1, math.radians(15)),    # 1/3 of 45° displacement
-    (10.1, -18.3, math.radians(30)),  # 2/3 of 45° displacement
+    # (5.0, -9.1, math.radians(15)),    # 1/3 of 45° displacement
+    # (10.1, -18.3, math.radians(30)),  # 2/3 of 45° displacement
     (15.1, -27.4, math.radians(45))  # DONE
 ]
 WPS_BL_OUT = [
-    (-3.2, -4.5, -math.radians(15)),  # 1/3 of 45° displacement
-    (-6.3, -9.1, -math.radians(30)),  # 2/3 of 45° displacement
-    (-9.5, -13.6, -math.radians(45))  # DONE.
+    # (-3.2, -4.5, -math.radians(15)),  # 1/3 of 45° displacement
+    # (-6.3, -9.1, -math.radians(30)),  # 2/3 of 45° displacement
+    (-8.5, -13.8, -math.radians(45))  # DONE.
 ]
 
 
@@ -120,10 +120,10 @@ BUFFER = 5.01
   Ellipse Equation's `A` and `B` where `A` is the X radius / semi-major axis, and `B` is the Y radius / semi-minor axis
 """
 # Indoor (SCSE Lab)
-FL_A_IN, FL_B_IN = 22.1,  22.3  # DONE
-FR_A_IN, FR_B_IN = 41.1,  41.6  # DONE
-BR_A_IN, BR_B_IN = 42.6,  45.3  # DONE
-BL_A_IN, BL_B_IN = 25.5,  25.0  # DONE
+FL_A_IN, FL_B_IN = 26.6,  26.8  # DONE
+FR_A_IN, FR_B_IN = 31.0,  31.4  # DONE
+BR_A_IN, BR_B_IN = 32.6,  32.6  # DONE
+BL_A_IN, BL_B_IN = 24.0,  28.0  # DONE
 
 # FL_A_IN, FL_B_IN = 22.6, 22.5
 # FR_A_IN, FR_B_IN = 41.1,  41.6
@@ -170,7 +170,7 @@ MAX_Y_ERR = 5, 5  # U, D (Configurable: Change to edit the node boundaries)
 
 OBSTACLE_WIDTH = 10
 IMG_THICKNESS = 2
-EDGE_ERR = 1
+EDGE_ERR = 0.1
 CONE = [10, 10, 4, 40]
 
 # +--------------------+
@@ -181,10 +181,10 @@ CONE = [10, 10, 4, 40]
 # *_X = LEFT, RIGHT
 # *_Y = UP, DOWN
 
-FL_OUTER_IN = 41
-FR_OUTER_IN = 54
-BL_OUTER_IN = 47
-BR_OUTER_IN = 69
+FL_OUTER_IN = 50 #41
+FR_OUTER_IN = 50 #54
+BL_OUTER_IN = 60 #47
+BR_OUTER_IN = 60 #69
 
 FL_OUTER_OUT = 40.8
 FR_OUTER_OUT = 51.6
@@ -197,7 +197,7 @@ BL_OUTER = BL_OUTER_IN if INDOOR else BL_OUTER_OUT
 BR_OUTER = BR_OUTER_IN if INDOOR else BR_OUTER_OUT
 
 # [TODO: Editable] To increase the boundaries to identify obstacles potentially in the path of the robot more accurately (before doing obstacle collision detection)
-BACKWARDS_A_B_MULTIPLIER = 2
+BACKWARDS_A_B_MULTIPLIER = 1.5
 
 FL_X_BOUND = [OBSTACLE_WIDTH/2 + FL_A - ROBOT_WIDTH/2 + ROBOT_HEIGHT - ROBOT_VERT_OFFSET,
               OBSTACLE_WIDTH/2 + ROBOT_WIDTH]

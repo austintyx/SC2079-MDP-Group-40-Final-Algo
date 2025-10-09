@@ -94,44 +94,44 @@ class Map:
 
         # For every obstacle, check if any of the 4 obstacle corners lies within the robot
         # To increase the virtual boundary of the obstacle (in cm)
-        EXTRA_VIRTUAL_BOUNDARY = 20
+        EXTRA_VIRTUAL_BOUNDARY = 10
         for obs in obstacles:
-            # Obstacle x and y bounds
+            # Obstacle bounds with virtual boundary
             o_btm = obs.y + EDGE_ERR - EXTRA_VIRTUAL_BOUNDARY
             o_left = obs.x + EDGE_ERR - EXTRA_VIRTUAL_BOUNDARY
             o_top = obs.y + OBSTACLE_WIDTH - EDGE_ERR + EXTRA_VIRTUAL_BOUNDARY
             o_right = obs.x + OBSTACLE_WIDTH - EDGE_ERR + EXTRA_VIRTUAL_BOUNDARY
-
-            # Return False if Robot 4 corners' (x, y) is inside the obstacle (x, y) boundary
+            
+            # Check 1: Robot corners inside obstacle
             for cx, cy in r_corners:
                 if o_left <= cx <= o_right and o_btm <= cy <= o_top:
                     return False
-
-            for o_x, o_y in (
-                (o_left, o_btm),  # obstacle's btm left corner
-                (o_left, o_top),  # obstacle's top left corner
-                (o_right, o_top),  # obstacle's top right corner
-                (o_right, o_btm),  # obstacle's btm right corner
-            ):
-                crosses = 0
-                for (st_x, st_y), (end_x, end_y) in r_segments:
-                    # Robot edge is entirely above or below obstacle's y coordinate
-                    if (st_y > o_y and end_y > o_y) or (st_y < o_y and end_y < o_y):
-                        continue
-
-                    # Vertical Robot edge
-                    if (end_x - st_x) == 0:
-                        intersect_x = st_x
-                    # Non-vertical Robot edge
-                    else:
-                        m = (end_y - st_y) / (end_x - st_x)  # Gradient
-                        if m == 0:
-                            intersect_x = min(st_x, end_x)
-                        else:
-                            intersect_x = st_x + (o_y - st_y) / m
-                    crosses += o_x <= intersect_x
-                if crosses == 1:
+            
+            # Check 2: Obstacle corners inside robot (IMPROVED)
+            obstacle_corners = [
+                np.array([o_left, o_btm]),
+                np.array([o_left, o_top]),
+                np.array([o_right, o_top]),
+                np.array([o_right, o_btm])
+            ]
+            
+            for o_corner in obstacle_corners:
+                if self._point_in_rotated_rect(o_corner, r_origin, r_vec_up, r_vec_right):
                     return False
+            
+            # Check 3: Edge-to-edge intersection (NEW - CRITICAL)
+            obstacle_edges = [
+                (np.array([o_left, o_btm]), np.array([o_left, o_top])),    # left
+                (np.array([o_left, o_top]), np.array([o_right, o_top])),   # top
+                (np.array([o_right, o_top]), np.array([o_right, o_btm])),  # right
+                (np.array([o_right, o_btm]), np.array([o_left, o_btm]))    # bottom
+            ]
+            
+            for r_seg in r_segments:
+                for o_seg in obstacle_edges:
+                    if self._segments_intersect(r_seg[0], r_seg[1], o_seg[0], o_seg[1]):
+                        return False
+        
         return True
 
     def priority_obs(
@@ -156,3 +156,18 @@ class Map:
         y_bounds = sorted([br[1], tl[1]])
 
         return list(filter(lambda o: x_bounds[0] < o.middle[0] < x_bounds[1] and y_bounds[0] < o.middle[1] < y_bounds[1], self.obstacles))
+    
+    def _point_in_rotated_rect(self, point, origin, vec_up, vec_right):
+        """Check if point is inside rotated rectangle defined by origin and vectors"""
+        v = point - origin
+        # Project onto local axes
+        proj_right = np.dot(v, vec_right) / np.dot(vec_right, vec_right)
+        proj_up = np.dot(v, vec_up) / np.dot(vec_up, vec_up)
+        return 0 <= proj_right <= 1 and 0 <= proj_up <= 1
+
+    def _segments_intersect(self, p1, p2, p3, p4):
+        """Check if line segment p1-p2 intersects with p3-p4"""
+        def ccw(A, B, C):
+            return (C[1]-A[1]) * (B[0]-A[0]) > (B[1]-A[1]) * (C[0]-A[0])
+        
+        return ccw(p1,p3,p4) != ccw(p2,p3,p4) and ccw(p1,p2,p3) != ccw(p1,p2,p4)
