@@ -27,18 +27,18 @@ class Obstacle:
 
         if self.facing == Direction.NORTH:
             if x == 190:
-                x += pad
+                x += 0
             elif x == 0:
-                x += pad + (2*OBSTACLE_WIDTH)
+                x += pad + (OBSTACLE_WIDTH)
             else:
-                x += pad + OBSTACLE_WIDTH  # pad changed to 4
+                x += pad # pad changed to 4
             y += ROBOT_MIN_CAMERA_DIST + OBSTACLE_WIDTH + ROBOT_HEIGHT
             theta = -pi / 2
         elif self.facing == Direction.SOUTH:
             if x == 190:
-                x -= pad + OBSTACLE_WIDTH  # pad changed to 13
+                x -= pad + OBSTACLE_WIDTH - 5  # pad changed to 13
             elif x != 0:
-                x -= pad
+                x -= pad - 5
             y -= ROBOT_MIN_CAMERA_DIST + ROBOT_HEIGHT
             theta = pi / 2
         elif self.facing == Direction.EAST:
@@ -50,11 +50,11 @@ class Obstacle:
             theta = pi
         elif self.facing == Direction.WEST:
             if y == 0:
-                y += pad + (2*OBSTACLE_WIDTH)
+                y += pad + (OBSTACLE_WIDTH)
             elif y == 190:
-                y += pad
+                y += 0
             else:
-                y += pad + OBSTACLE_WIDTH  # pad changed to 4
+                y += pad  # pad changed to 4
             x -= ROBOT_MIN_CAMERA_DIST + ROBOT_WIDTH
             theta = 0
 
